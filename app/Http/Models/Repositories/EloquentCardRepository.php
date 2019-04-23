@@ -90,7 +90,7 @@ class EloquentCardRepository implements CardRepository
     /**
      * {@inheritdoc}
      * @todo:
-     *      Не совсем корректно напрямую обращаться к свойству которого может не быть.
+     *      Не корректно напрямую обращаться к свойству которого может не быть.
      *      Я бы использовал паттерн DDD, но тогда эта задача слишком растянется.
      */
     public function collectCard(string $bill, array $data): array

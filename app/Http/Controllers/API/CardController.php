@@ -7,6 +7,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Models\Repositories\BillRepository;
 use App\Http\Models\Repositories\CardRepository;
 use App\Http\Requests\API\CardRequest;
+use App\Traits\AuthorizedUserTrait;
 use App\Traits\GettingResponseTrait;
 use Exception;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,7 @@ use Illuminate\Http\JsonResponse;
 final class CardController extends Controller
 {
     use GettingResponseTrait;
+    use AuthorizedUserTrait;
 
     private $client;
 
@@ -43,23 +45,25 @@ final class CardController extends Controller
 
     public function listCards(CardRequest $cardRequest): JsonResponse
     {
-        try {
-            $response = $this->client
-                ->get('Cards', [
-                    'query' => $cardRequest->only('id_bill')
-                ]);
+        if ($this->isCurrentUserByBillId($cardRequest->get('id_bill'))) {
+            try {
+                $response = $this->client
+                    ->get('Cards', [
+                        'query' => $cardRequest->only('id_bill')
+                    ]);
 
-            $response = $this->getResponse($response);
+                $response = $this->getResponse($response);
 
-            foreach ($response['Response']['Card'] as $card) {
-                $this->cardRepository->updateOrCreate(
-                    $this->cardRepository->collectCard($cardRequest->get('id_bill'), $card)
-                );
+                foreach ($response['Response']['Card'] as $card) {
+                    $this->cardRepository->updateOrCreate(
+                        $this->cardRepository->collectCard($cardRequest->get('id_bill'), $card)
+                    );
+                }
+            } catch (Exception $exception) {
+                $response = false;
+                $errorCode = $exception->getCode();
+                $errorMessage = $exception->getMessage();
             }
-        } catch (Exception $exception) {
-            $response = false;
-            $errorCode = $exception->getCode();
-            $errorMessage = $exception->getMessage();
         }
 
         return response()->json([

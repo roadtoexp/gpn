@@ -6,6 +6,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Models\Repositories\BillRepository;
 use App\Http\Models\Repositories\UserRepository;
+use App\Traits\AuthorizedUserTrait;
 use App\Traits\GettingResponseTrait;
 use Exception;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,7 @@ use Illuminate\Http\JsonResponse;
 final class BillController extends Controller
 {
     use GettingResponseTrait;
+    use AuthorizedUserTrait;
 
     private $client;
 
@@ -43,30 +45,34 @@ final class BillController extends Controller
 
     public function listBills(BillRequest $billRequest): JsonResponse
     {
-        // TODO: авторизация пользователя
-        try {
-            $response = $this->client
-                ->get('Bills', [
-                    'query' => $billRequest->only('login')
-                ]);
+        if ($this->isCurrentUserByUserLogin($billRequest->get('login'))) {
+            try {
+                $response = $this->client
+                    ->get('Bills', [
+                        'query' => $billRequest->only('login')
+                    ]);
 
-            $response = $this->getResponse($response);
+                $response = $this->getResponse($response);
 
-            foreach ($response['Response']['Bill'] as $bill) {
-                $this->billRepository->updateOrCreate(
-                    $this->billRepository->collectBill($billRequest->post('login'), $bill)
-                );
+                foreach ($response['Response']['Bill'] as $bill) {
+                    $this->billRepository->updateOrCreate(
+                        $this->billRepository->collectBill($billRequest->get('login'), $bill)
+                    );
+                }
+            } catch (Exception $exception) {
+                $response = [
+                    'Response' => false,
+                    'ErrorCode' => $exception->getCode(),
+                    'ErrorMessage' => $exception->getMessage()
+                ];
             }
-        } catch (Exception $exception) {
-            $response = false;
-            $errorCode = $exception->getCode();
-            $errorMessage = $exception->getMessage();
         }
 
-        return response()->json([
-            'response' => $this->userRepository->findByLogin($billRequest->post('login'))->bills ?? [],
-            'errorcode' => $errorCode ?? false,
-            'errormessage' => $errorMessage ?? null
-        ]);
+        return response()
+            ->json([
+                'response' => $response['Response'] ?? $this->userRepository->findByLogin($billRequest->post('login'))->bills,
+                'errorcode' => $response['ErrorCode'] ?? 0,
+                'errormessage' => $response['ErrorMessage'] ?? ''
+            ]);
     }
 }
