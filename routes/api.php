@@ -13,6 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::group(['middleware' => ['api']], function () {
+    Route::post('Auth', 'API\UserController@auth');
+    Route::get('Bills', 'API\BillController@listBills');
+    Route::get('Cards', 'API\CardController@listCards');
+    Route::get('CardDetail', 'API\CardController@show');
+//});
+
+Route::group(['middleware' => 'session.alive'], function() {
+    Route::get('/a', function () {
+       return 'sadsaa';
+    });
 });
