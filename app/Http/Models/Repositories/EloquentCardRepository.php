@@ -46,7 +46,6 @@ class EloquentCardRepository implements CardRepository
 
     public function all(array $filter, int $offset = 0, int $limit = 10000): Collection
     {
-        dump($filter, $offset, $limit);
         return $this->card
             ->where($filter)
             ->skip($offset)

@@ -13,15 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::group(['middleware' => ['api']], function () {
-    Route::post('Auth', 'API\UserController@auth');
+Route::post('Auth', 'API\UserController@auth');
+Route::group(['middleware' => ['session.alive']], function () {
     Route::get('Bills', 'API\BillController@listBills');
     Route::get('Cards', 'API\CardController@listCards');
     Route::get('CardDetail', 'API\CardController@show');
-//});
-
-Route::group(['middleware' => 'session.alive'], function() {
-    Route::get('/a', function () {
-       return 'sadsaa';
-    });
 });
