@@ -1,3 +1,6 @@
+# ТЗ
+https://docs.google.com/document/d/1lwW7ENg2vungAssWRqybccGZ5VbEike-jlqQgQyJzJY/edit?usp=sharing
+
 # Быстрый старт:
 
 - Клонируем репозиторий: ```git clone git@github.com:roadtoexp/gpn.git .```
