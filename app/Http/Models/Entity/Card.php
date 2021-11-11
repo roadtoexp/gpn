@@ -20,7 +20,7 @@ class Card extends Model
      * {@inheritdoc}
      */
     protected $hidden = [
-        'bill_id', 'type_id'
+        'bill_id', 'type_id',
     ];
 
     /**

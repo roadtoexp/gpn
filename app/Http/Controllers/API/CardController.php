@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Models\Repositories\BillRepository;
 use App\Http\Models\Repositories\CardRepository;
 use App\Http\Requests\API\CardRequest;
 use App\Traits\AuthorizedUserTrait;
 use App\Traits\GettingResponseTrait;
 use Exception;
-use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use Illuminate\Http\JsonResponse;
 
@@ -21,9 +21,9 @@ final class CardController extends Controller
 
     private $client;
 
-    /** @var \App\Http\Models\Repositories\BillRepository $billRepository */
+    /** @var \App\Http\Models\Repositories\BillRepository */
     private $billRepository;
-    /** @var \App\Http\Models\Repositories\CardRepository $cardRepository */
+    /** @var \App\Http\Models\Repositories\CardRepository */
     private $cardRepository;
 
     /**
@@ -39,7 +39,7 @@ final class CardController extends Controller
 
         $this->client = new Client([
             'base_uri' => env('API_URL', ''),
-            'verify' => false
+            'verify'   => false,
         ]);
     }
 
@@ -49,7 +49,7 @@ final class CardController extends Controller
             try {
                 $response = $this->client
                     ->get('Cards', [
-                        'query' => $cardRequest->only('id_bill')
+                        'query' => $cardRequest->only('id_bill'),
                     ]);
 
                 $response = $this->getResponse($response);
@@ -72,16 +72,17 @@ final class CardController extends Controller
                 $cardRequest->get('offset', 0),
                 $cardRequest->get('limit', 10000)
             ),
-            'errorcode' => $errorCode ?? false,
-            'errormessage' => $errorMessage ?? null
+            'errorcode'    => $errorCode ?? false,
+            'errormessage' => $errorMessage ?? null,
         ]);
     }
 
-    public function show(CardRequest $cardRequest) {
+    public function show(CardRequest $cardRequest)
+    {
         try {
             $response = $this->client
                 ->get('CardDetail', [
-                    'query' => $cardRequest->only('id_card')
+                    'query' => $cardRequest->only('id_card'),
                 ]);
 
             $response = $this->getResponse($response);
@@ -99,9 +100,9 @@ final class CardController extends Controller
         }
 
         return response()->json([
-            'response' => $this->cardRepository->findById((integer)$cardRequest->get('id_card')),
-            'errorcode' => $errorCode ?? false,
-            'errormessage' => $errorMessage ?? null
+            'response'     => $this->cardRepository->findById((int) $cardRequest->get('id_card')),
+            'errorcode'    => $errorCode ?? false,
+            'errormessage' => $errorMessage ?? null,
         ]);
     }
 }

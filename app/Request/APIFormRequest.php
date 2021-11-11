@@ -18,9 +18,9 @@ class APIFormRequest extends FormRequest
         throw new HttpResponseException(response()
             ->json(
                 [
-                    'response' => false,
-                    'errorcode' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
-                    'errormessage' => $errors
+                    'response'     => false,
+                    'errorcode'    => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                    'errormessage' => $errors,
                 ],
                 JsonResponse::HTTP_UNPROCESSABLE_ENTITY
             ));

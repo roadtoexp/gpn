@@ -22,23 +22,22 @@ final class UserControllerTest extends TestCase
     {
         // Given
         $data = [
-            'login' => 'user1',
-            'password' => '123123'
+            'login'    => 'user1',
+            'password' => '123123',
         ];
 
         $response = [
-            'response' => "1",
-            'errorcode' => "0",
-            'errormessage' => null
+            'response'     => '1',
+            'errorcode'    => '0',
+            'errormessage' => null,
         ];
 
         // When
 
-       // Then
+        // Then
         $this->post('/api/Auth', $data)
             ->assertStatus(200)
             ->assertJson($response);
-
     }
 
     /**
@@ -48,14 +47,14 @@ final class UserControllerTest extends TestCase
     {
         // Given
         $data = [
-            'login' => 'user12',
-            'password' => '123123'
+            'login'    => 'user12',
+            'password' => '123123',
         ];
 
         $response = [
-            'response' => false,
-            'errorcode' => 500,
-            'errormessage' => 'Invalid credentials'
+            'response'     => false,
+            'errorcode'    => 500,
+            'errormessage' => 'Invalid credentials',
         ];
 
         // When
@@ -64,6 +63,5 @@ final class UserControllerTest extends TestCase
         $this->post('/api/Auth', $data)
             ->assertStatus(200)
             ->assertJson($response);
-
     }
 }

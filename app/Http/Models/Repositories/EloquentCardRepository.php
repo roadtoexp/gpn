@@ -17,8 +17,7 @@ class EloquentCardRepository implements CardRepository
         Card $card,
         CardTypeRepository $cardTypeRepository,
         BillRepository $billRepository
-    )
-    {
+    ) {
         $this->card = $card;
         $this->cardTypeRepository = $cardTypeRepository;
         $this->billRepository = $billRepository;
@@ -88,6 +87,7 @@ class EloquentCardRepository implements CardRepository
 
     /**
      * {@inheritdoc}
+     *
      * @todo:
      *      Не корректно напрямую обращаться к свойству которого может не быть.
      *      Я бы использовал паттерн DDD, но тогда эта задача слишком растянется.
@@ -95,13 +95,13 @@ class EloquentCardRepository implements CardRepository
     public function collectCard(string $bill, array $data): array
     {
         return [
-            'id' => $data['id'],
-            'bill_id' => $this->billRepository->findById($bill)->id,
-            'type_id' => $this->cardTypeRepository->findById($data['type'])->id,
-            'number' => $data['number'],
-            'active' => $data['active'],
-            'balance' => $data['balance'] ?? null,
-            'last_usage' => $data['last_usage'] ?? null,
+            'id'          => $data['id'],
+            'bill_id'     => $this->billRepository->findById($bill)->id,
+            'type_id'     => $this->cardTypeRepository->findById($data['type'])->id,
+            'number'      => $data['number'],
+            'active'      => $data['active'],
+            'balance'     => $data['balance'] ?? null,
+            'last_usage'  => $data['last_usage'] ?? null,
             'description' => $data['description'] ?? '',
         ];
     }

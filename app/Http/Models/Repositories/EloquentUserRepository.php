@@ -8,7 +8,7 @@ use App\Models\Entity\User;
 
 class EloquentUserRepository implements UserRepository
 {
-    /** @var \App\Models\Entity\User $user */
+    /** @var \App\Models\Entity\User */
     private $user;
 
     /**

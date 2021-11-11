@@ -28,10 +28,10 @@ class DeleteOldData extends Command
      */
     protected $description = 'Command deleted old data';
 
-    /** @var \App\Http\Models\Repositories\SessionRepository $sessionRepository */
+    /** @var \App\Http\Models\Repositories\SessionRepository */
     private $sessionRepository;
 
-    /** @var \App\Http\Models\Repositories\UserRepository $userRepository */
+    /** @var \App\Http\Models\Repositories\UserRepository */
     private $userRepository;
 
     /**

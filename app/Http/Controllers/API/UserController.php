@@ -13,18 +13,16 @@ use GuzzleHttp\Client;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Class UserController
- *
- * @package App\Http\Controllers\API
+ * Class UserController.
  */
 final class UserController extends Controller
 {
     use AuthorizedUserTrait;
     use GettingResponseTrait;
 
-    /** @var \App\Http\Models\Repositories\UserRepository $userRepository */
+    /** @var \App\Http\Models\Repositories\UserRepository */
     private $userRepository;
-    /** @var \GuzzleHttp\Client $client */
+    /** @var \GuzzleHttp\Client */
     private $client;
 
     /**
@@ -36,7 +34,7 @@ final class UserController extends Controller
     {
         $this->client = new Client([
             'base_uri' => env('API_URL', ''),
-            'verify' => false
+            'verify'   => false,
         ]);
 
         $this->userRepository = $userRepository;
@@ -51,7 +49,7 @@ final class UserController extends Controller
     {
         try {
             $response = $this->client->post('Auth', [
-                'form_params' => $userRequest->only(['login', 'password'])
+                'form_params' => $userRequest->only(['login', 'password']),
             ]);
 
             $response = $this->getResponse($response);
@@ -62,17 +60,17 @@ final class UserController extends Controller
             );
         } catch (\Exception $exception) {
             $response = [
-                'Response' => false,
-                'ErrorCode' => $exception->getCode(),
-                'ErrorMessage' => 'Invalid credentials'
+                'Response'     => false,
+                'ErrorCode'    => $exception->getCode(),
+                'ErrorMessage' => 'Invalid credentials',
             ];
         }
 
         return response()
             ->json([
-                'response' => $response['Response'],
-                'errorcode' => $response['ErrorCode'],
-                'errormessage' => $response['ErrorMessage']
+                'response'     => $response['Response'],
+                'errorcode'    => $response['ErrorCode'],
+                'errormessage' => $response['ErrorMessage'],
             ]);
     }
 }

@@ -8,13 +8,13 @@ use App\Http\Models\Entity\Bill;
 
 class EloquentBillRepository implements BillRepository
 {
-    /** @var \App\Http\Models\Entity\Bill $bill */
+    /** @var \App\Http\Models\Entity\Bill */
     private $bill;
 
-    /** @var \App\Http\Models\Repositories\BillStatusRepository $billStatusRepository */
+    /** @var \App\Http\Models\Repositories\BillStatusRepository */
     private $billStatusRepository;
 
-    /** @var \App\Http\Models\Repositories\UserRepository $userRepository */
+    /** @var \App\Http\Models\Repositories\UserRepository */
     private $userRepository;
 
     /**
@@ -28,8 +28,7 @@ class EloquentBillRepository implements BillRepository
         Bill $bill,
         BillStatusRepository $billStatusRepository,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->bill = $bill;
         $this->billStatusRepository = $billStatusRepository;
         $this->userRepository = $userRepository;
@@ -90,6 +89,7 @@ class EloquentBillRepository implements BillRepository
 
     /**
      * {@inheritdoc}
+     *
      * @todo:
      *      Не корректно напрямую обращаться к свойству которого может не быть.
      *      Я бы использовал паттерн DDD, но тогда эта задача слишком растянется.
@@ -97,10 +97,10 @@ class EloquentBillRepository implements BillRepository
     public function collectBill(string $user, array $data): array
     {
         return [
-            'id' => $data['id'],
-            'number' => $data['number'],
-            'user_id' => $this->userRepository->findByLogin($user)->id,
-            'status_id' => $this->billStatusRepository->findById($data['status'])->id
+            'id'        => $data['id'],
+            'number'    => $data['number'],
+            'user_id'   => $this->userRepository->findByLogin($user)->id,
+            'status_id' => $this->billStatusRepository->findById($data['status'])->id,
         ];
     }
 }

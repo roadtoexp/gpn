@@ -28,13 +28,13 @@ class ImportDictionary extends Command
      */
     protected $description = 'Command imported dictionaries of API';
 
-    /** @var \GuzzleHttp\Client $client */
+    /** @var \GuzzleHttp\Client */
     private $client;
 
-    /** @var \App\Http\Models\Repositories\BillStatusRepository $billStatusRepository */
+    /** @var \App\Http\Models\Repositories\BillStatusRepository */
     private $billStatusRepository;
 
-    /** @var \App\Http\Models\Repositories\CardTypeRepository $cardTypeRepository */
+    /** @var \App\Http\Models\Repositories\CardTypeRepository */
     private $cardTypeRepository;
 
     /**
@@ -49,7 +49,7 @@ class ImportDictionary extends Command
 
         $this->client = new Client([
             'base_uri' => env('API_URL', ''),
-            'verify' => false
+            'verify'   => false,
         ]);
 
         $this->billStatusRepository = $billStatusRepository;
@@ -80,8 +80,8 @@ class ImportDictionary extends Command
         $response = $this->client
             ->get('Dictionary', [
                 'query' => [
-                    'name' => $name
-                ]
+                    'name' => $name,
+                ],
             ]);
 
         $dictionaryItems = $this->getResponse($response)['Response']['DictionaryItem'];

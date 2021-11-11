@@ -14,21 +14,21 @@ class Bill extends Model
      * {@inheritdoc}
      */
     protected $fillable = [
-        'id', 'user_id', 'number', 'status_id'
+        'id', 'user_id', 'number', 'status_id',
     ];
 
     /**
      * {@inheritdoc}
      */
     protected $appends = [
-        'status'
+        'status',
     ];
 
     /**
      * {@inheritdoc}
      */
     protected $hidden = [
-        'user_id', 'status_id'
+        'user_id', 'status_id',
     ];
 
     /**

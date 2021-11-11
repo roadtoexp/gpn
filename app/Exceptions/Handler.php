@@ -30,7 +30,8 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param \Exception $exception
+     *
      * @return void
      */
     public function report(Exception $exception)
@@ -41,8 +42,9 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $exception
+     *
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
@@ -51,7 +53,7 @@ class Handler extends ExceptionHandler
         if ($request->wantsJson()) {
             // Define the response
             $response = [
-                'errors' => 'Sorry, something went wrong.'
+                'errors' => 'Sorry, something went wrong.',
             ];
 
             // If the app is in debug mode
@@ -66,8 +68,7 @@ class Handler extends ExceptionHandler
             $status = 400;
 
             // If this exception instance of Illuminate\Database\Eloquent\ModelNotFoundException
-            if ($exception instanceof ModelNotFoundException)
-            {
+            if ($exception instanceof ModelNotFoundException) {
                 $status = 404;
             }
 

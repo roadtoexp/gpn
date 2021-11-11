@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Models\Repositories\BillRepository;
 use App\Http\Models\Repositories\UserRepository;
+use App\Http\Requests\API\BillRequest;
 use App\Traits\AuthorizedUserTrait;
 use App\Traits\GettingResponseTrait;
 use Exception;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\API\BillRequest;
 use GuzzleHttp\Client;
 use Illuminate\Http\JsonResponse;
 
@@ -21,9 +21,9 @@ final class BillController extends Controller
 
     private $client;
 
-    /** @var \App\Http\Models\Repositories\UserRepository $userRepository */
+    /** @var \App\Http\Models\Repositories\UserRepository */
     private $userRepository;
-    /** @var \App\Http\Models\Repositories\BillRepository $billRepository */
+    /** @var \App\Http\Models\Repositories\BillRepository */
     private $billRepository;
 
     /**
@@ -39,7 +39,7 @@ final class BillController extends Controller
 
         $this->client = new Client([
             'base_uri' => env('API_URL', ''),
-            'verify' => false
+            'verify'   => false,
         ]);
     }
 
@@ -49,7 +49,7 @@ final class BillController extends Controller
             try {
                 $response = $this->client
                     ->get('Bills', [
-                        'query' => $billRequest->only('login')
+                        'query' => $billRequest->only('login'),
                     ]);
 
                 $response = $this->getResponse($response);
@@ -61,18 +61,18 @@ final class BillController extends Controller
                 }
             } catch (Exception $exception) {
                 $response = [
-                    'Response' => false,
-                    'ErrorCode' => $exception->getCode(),
-                    'ErrorMessage' => $exception->getMessage()
+                    'Response'     => false,
+                    'ErrorCode'    => $exception->getCode(),
+                    'ErrorMessage' => $exception->getMessage(),
                 ];
             }
         }
 
         return response()
             ->json([
-                'response' => $response['Response'] ?? $this->userRepository->findByLogin($billRequest->post('login'))->bills,
-                'errorcode' => $response['ErrorCode'] ?? 0,
-                'errormessage' => $response['ErrorMessage'] ?? ''
+                'response'     => $response['Response'] ?? $this->userRepository->findByLogin($billRequest->post('login'))->bills,
+                'errorcode'    => $response['ErrorCode'] ?? 0,
+                'errormessage' => $response['ErrorMessage'] ?? '',
             ]);
     }
 }
